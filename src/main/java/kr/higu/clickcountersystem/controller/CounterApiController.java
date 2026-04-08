@@ -22,6 +22,11 @@ public class CounterApiController {
         counterService.increaseSync();
     }
 
+    @PostMapping("/click3")
+    public void clickAtomic() {
+        counterService.increaseAtomic();
+    }
+
     @GetMapping("/count")
     public Long getCount() {
         return counterService.getCount();

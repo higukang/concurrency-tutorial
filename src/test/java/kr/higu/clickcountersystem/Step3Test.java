@@ -10,13 +10,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @SpringBootTest
-public class CounterConcurrencySyncTest {
+public class Step3Test {
 
     @Autowired
     private CounterService counterService;
 
     @Test
-    void 동시에_1000번_증가() throws InterruptedException {
+    void 동시에_1000번_증가_atomic() throws InterruptedException {
         int threadCount = 1000;
 
         ExecutorService executorService = Executors.newFixedThreadPool(200);
@@ -25,7 +25,7 @@ public class CounterConcurrencySyncTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    counterService.increaseSync();
+                    counterService.increaseAtomic();
                 } finally {
                     latch.countDown();
                 }

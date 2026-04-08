@@ -21,6 +21,7 @@ public class CounterService {
         return counter.getClickCount();
     }
 
+    // step1 - NAIVE 구현
     @Transactional
     public void increase() {
         Counter counter = counterRepository.findById(COUNTER_ID)
@@ -29,12 +30,21 @@ public class CounterService {
         counter.increase();
     }
 
-    // 개선 step1 - synchronized 적용
+    // step2 - synchronized 적용
     @Transactional
     public synchronized void increaseSync() {
         Counter counter = counterRepository.findById(COUNTER_ID)
                 .orElseThrow();
 
         counter.increase();
+    }
+
+    // step3 - DB 원자적 연산 적용
+    @Transactional
+    public void increaseAtomic() {
+        int updatedRowCount = counterRepository.increaseAtomic();
+        if (updatedRowCount != 1) {
+            throw new IllegalStateException("Counter update failed");
+        }
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @SpringBootTest
-public class CounterConcurrencyTest {
+public class Step2Test {
 
     @Autowired
     private CounterService counterService;
@@ -25,7 +25,7 @@ public class CounterConcurrencyTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    counterService.increase();
+                    counterService.increaseSync();
                 } finally {
                     latch.countDown();
                 }
