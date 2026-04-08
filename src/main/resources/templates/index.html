@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Click Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .count-box {
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 15px 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>클릭 카운터</h1>
+
+<div class="count-box">
+    현재 총 클릭 수: <strong th:text="${count}">0</strong>
+</div>
+
+<form method="post" action="/click">
+    <button type="submit">클릭!</button>
+</form>
+</body>
+</html>
