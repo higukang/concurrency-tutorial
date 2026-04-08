@@ -1,0 +1,1 @@
+Commit Messages are must be written in **KOREAN**
