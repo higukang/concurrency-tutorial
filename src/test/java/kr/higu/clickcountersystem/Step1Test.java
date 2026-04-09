@@ -1,6 +1,6 @@
 package kr.higu.clickcountersystem;
 
-import kr.higu.clickcountersystem.service.CounterService;
+import kr.higu.clickcountersystem.service.Step1CounterService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 public class Step1Test {
 
     @Autowired
-    private CounterService counterService;
+    private Step1CounterService step1CounterService;
 
     @Test
     void 동시에_1000번_증가() throws InterruptedException {
@@ -25,7 +25,7 @@ public class Step1Test {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    counterService.increase();
+                    step1CounterService.increase();
                 } finally {
                     latch.countDown();
                 }
@@ -34,7 +34,7 @@ public class Step1Test {
 
         latch.await();
 
-        Long count = counterService.getCount();
+        Long count = step1CounterService.getCount();
         System.out.println("최종 count = " + count);
     }
 }
