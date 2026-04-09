@@ -1,0 +1,11 @@
+import http from 'k6/http';
+
+// step4 : Redis atomic increment 적용
+export let options = {
+    vus: 100,        // 동시 사용자
+    duration: '10s', // 10초 동안
+};
+
+export default function () {
+    http.post('http://localhost:8080/api/click4');
+}
