@@ -22,26 +22,41 @@ POST /api/click
 애플리케이션에서 `조회 -> 값 증가 -> 저장`으로 처리하는 가장 단순한 방식입니다.  
 구현은 쉽지만 동시 요청이 들어오면 `Lost Update`가 발생합니다.
 
-문서: [step1.md](./result/step1.md)
+문서: [step1.md](./result/step1.md)  
+서비스: [Step1CounterService.java](./src/main/java/kr/higu/clickcountersystem/service/Step1CounterService.java)  
+컨트롤러: [Step1CounterController.java](./src/main/java/kr/higu/clickcountersystem/controller/Step1CounterController.java)  
+테스트: [Step1Test.java](./src/test/java/kr/higu/clickcountersystem/Step1Test.java)  
+k6: [click-test.js](./k6/click-test.js)
 
 ### Step 2. synchronized
 
 메서드에 `synchronized`를 붙여 JVM 안에서는 한 번에 하나의 스레드만 들어오게 막습니다.  
 Step 1보다는 낫지만 트랜잭션과 DB 커밋 경계까지 완전히 보호하지는 못합니다.
 
-문서: [step2.md](./result/step2.md)
+문서: [step2.md](./result/step2.md)  
+서비스: [Step2CounterService.java](./src/main/java/kr/higu/clickcountersystem/service/Step2CounterService.java)  
+컨트롤러: [Step2CounterController.java](./src/main/java/kr/higu/clickcountersystem/controller/Step2CounterController.java)  
+테스트: [Step2Test.java](./src/test/java/kr/higu/clickcountersystem/Step2Test.java)  
+k6: [click-test2.js](./k6/click-test2.js)
 
 ### Step 3. DB atomic update
 
 애플리케이션이 값을 읽고 수정하지 않고, DB가 `click_count = click_count + 1`로 직접 증가시킵니다.  
 정합성은 확보되지만 모든 요청이 같은 row를 갱신하므로 write hotspot은 남습니다.
 
-문서: [step3.md](./result/step3.md)
+문서: [step3.md](./result/step3.md)  
+서비스: [Step3CounterService.java](./src/main/java/kr/higu/clickcountersystem/service/Step3CounterService.java)  
+컨트롤러: [Step3CounterController.java](./src/main/java/kr/higu/clickcountersystem/controller/Step3CounterController.java)  
+테스트: [Step3Test.java](./src/test/java/kr/higu/clickcountersystem/Step3Test.java)  
+k6: [click-test3.js](./k6/click-test3.js)
 
 ### Step 4. Redis atomic increment
 
 실시간 증가 처리는 Redis `INCR`로 받고, 필요할 때 DB로 flush하는 방식입니다.  
 DB 단일 row에 직접 쓰는 빈도를 줄여 throughput 개선 방향을 확인하는 단계입니다.
+
+서비스: [Step4CounterService.java](./src/main/java/kr/higu/clickcountersystem/service/Step4CounterService.java)  
+컨트롤러: [Step4CounterController.java](./src/main/java/kr/higu/clickcountersystem/controller/Step4CounterController.java)
 
 전체 비교: [results.md](./result/results.md)
 
